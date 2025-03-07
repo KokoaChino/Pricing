@@ -10,8 +10,10 @@ import java.util.Objects;
 
 
 public class Main {
+
+    private static final int MODE = 4;
     public static void main(String[] args) {
-        Picture.setMODE(3); // 设置模式
+        Picture.setMODE(MODE); // 设置模式
         Map<String, String> map = new HashMap<>(); // 商品id -> 价格
         DataFormatter dataFormatter = new DataFormatter();
         try {

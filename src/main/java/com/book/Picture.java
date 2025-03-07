@@ -31,6 +31,7 @@ public class Picture {
             case 1 -> fun_1(image, watermark); // 单一颜色
             case 2 -> fun_2(image, watermark); // 渐变颜色
             case 3 -> fun_3(image, watermark); // 斜体
+            case 4 -> fun_4(image, watermark); // 左侧居中-水平
             default -> throw new IllegalStateException("模式设置错误！");
         };
     }
@@ -96,6 +97,24 @@ public class Picture {
             graphics.drawString(String.valueOf(c), x, y);
             x += fm.charWidth(c);
             y -= 3;
+        }
+        graphics.dispose();
+        return bufferedImage;
+    }
+
+    public static BufferedImage fun_4(Image image, String watermark) {
+        int width = image.getWidth(null), height = image.getHeight(null); // 图片宽高
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB); // 图片缓存
+        Graphics2D graphics = bufferedImage.createGraphics(); // 画笔
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); // 抗锯齿
+        graphics.drawImage(image, 0, 0, width, height, null); // 初始画布
+        graphics.setFont(new Font("DIN", Font.BOLD, 100)); // 字体类型 字体风格 字体大小
+        graphics.setColor(new Color(227, 34, 17)); // 颜色
+        FontMetrics fm = graphics.getFontMetrics(); // 获取字体的尺寸
+        for (int i = 0, x = 70; i < watermark.length(); i++) { // 画水印
+            char c = watermark.charAt(i);
+            graphics.drawString(String.valueOf(c), x, 705);
+            x += fm.charWidth(c) - 8;
         }
         graphics.dispose();
         return bufferedImage;
