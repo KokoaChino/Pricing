@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class Main {
 
-    private static final int MODE = 4;
+    private static final int MODE = 5;
     public static void main(String[] args) {
         Picture.setMODE(MODE); // 设置模式
         Map<String, String> map = new HashMap<>(); // 商品id -> 价格
@@ -26,15 +26,21 @@ public class Main {
                 map.put(mid, price); // 建立映射
             }
             File[] files = new File("Input").listFiles(); // 图片文件
+            int cnt = 0;
             if (files != null) {
                 for (File f: files) {
                     String mid = f.getName();
                     mid = mid.substring(0, mid.lastIndexOf('.'));
                     String price = map.get(mid);
-                    if (price == null) System.out.println(mid); // 匹配失败
+                    if (price == null) { // 匹配失败
+                        cnt++;
+                        System.out.println("匹配失败：" + mid);
+                    }
                     else Picture.getImageResult(f, price);
                 }
             }
+            System.out.format("匹配成功：%d\n", files.length - cnt);
+            System.out.println("匹配失败：" + cnt);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -32,6 +32,7 @@ public class Picture {
             case 2 -> fun_2(image, watermark); // 渐变颜色
             case 3 -> fun_3(image, watermark); // 斜体
             case 4 -> fun_4(image, watermark); // 左侧居中-水平
+            case 5 -> fun_5(image, watermark); // 右下黄色
             default -> throw new IllegalStateException("模式设置错误！");
         };
     }
@@ -115,6 +116,34 @@ public class Picture {
             char c = watermark.charAt(i);
             graphics.drawString(String.valueOf(c), x, 705);
             x += fm.charWidth(c) - 8;
+        }
+        graphics.dispose();
+        return bufferedImage;
+    }
+
+    public static BufferedImage fun_5(Image image, String watermark) {
+        int width = image.getWidth(null), height = image.getHeight(null); // 图片宽高
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB); // 图片缓存
+        Graphics2D graphics = bufferedImage.createGraphics(); // 画笔
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); // 抗锯齿
+        graphics.drawImage(image, 0, 0, width, height, null); // 初始画布
+        graphics.setFont(new Font("HarmonyOS Sans SC", Font.BOLD + Font.ITALIC, 140)); // 字体类型 字体风格 字体大小
+        FontMetrics fm = graphics.getFontMetrics(); // 获取字体的尺寸
+        graphics.setColor(new Color(0x065223)); // 描边颜色
+        for (int i = 0, x = 840, y = 1175, gap = 6; i < watermark.length(); i++) { // 画描边
+            char c = watermark.charAt(i);
+            for (int j = -gap; j <= gap; j++) {
+                for (int k = -gap; k <= gap; k++) {
+                    graphics.drawString(String.valueOf(c), x + j, y + k);
+                }
+            }
+            x += fm.charWidth(c) - 3;
+        }
+        graphics.setColor(new Color(0xfdf04a)); // 颜色
+        for (int i = 0, x = 840, y = 1175; i < watermark.length(); i++) { // 画水印
+            char c = watermark.charAt(i);
+            graphics.drawString(String.valueOf(c), x, y);
+            x += fm.charWidth(c) - 3;
         }
         graphics.dispose();
         return bufferedImage;
